@@ -1,12 +1,12 @@
 package Tools;
 
 
-class BinaryIndexedTreesSum { // 树状数组 Sum
+class BinaryIndexedTrees { // 树状数组
 
     public static int n;
     public static int[] d;
 
-    public BinaryIndexedTreesSum(int[] nums) {
+    public BinaryIndexedTrees(int[] nums) {
         n = nums.length + 1;
         d = new int[n];
         for (int i = 0; i < n - 1; i++) update(i, nums[i]);

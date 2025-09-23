@@ -24,7 +24,7 @@ class SegmentTree { // 线段树
         d[i] = d[2 * i] + d[2 * i + 1];
     }
 
-    private int __query(int start, int end, int left, int right, int i) { // 区间查询
+    private int query(int start, int end, int left, int right, int i) { // 区间查询
         if (left >= start && right <= end) return d[i];
         int ret = 0, mid = left + (right - left) / 2;
         if (lazy[i] != 0 && left != right) {
@@ -34,12 +34,12 @@ class SegmentTree { // 线段树
             lazy[2 * i + 1] += lazy[i];
             lazy[i] = 0;
         }
-        if (start <= mid) ret += __query(start, end, left, mid, 2 * i);
-        if (end >= mid + 1) ret += __query(start, end, mid + 1, right, 2 * i + 1);
+        if (start <= mid) ret += query(start, end, left, mid, 2 * i);
+        if (end >= mid + 1) ret += query(start, end, mid + 1, right, 2 * i + 1);
         return ret;
     }
 
-    private void __update(int start, int end, int k, int left, int right, int i) { // 区间修改
+    private void update(int start, int end, int k, int left, int right, int i) { // 区间修改
         if (left >= start && right <= end) {
             d[i] += (right - left + 1) * k;
             lazy[i] += k;
@@ -53,16 +53,16 @@ class SegmentTree { // 线段树
             lazy[2 * i + 1] += lazy[i];
             lazy[i] = 0;
         }
-        if (start <= mid) __update(start, end, k, left, mid, 2 * i);
-        if (end >= mid + 1) __update(start, end, k, mid + 1, right, 2 * i + 1);
+        if (start <= mid) update(start, end, k, left, mid, 2 * i);
+        if (end >= mid + 1) update(start, end, k, mid + 1, right, 2 * i + 1);
         d[i] = d[2 * i] + d[2 * i + 1];
     }
 
     public int query(int start, int end) { // 区间查询
-        return __query(start, end, 0, n - 1, 1);
+        return query(start, end, 0, n - 1, 1);
     }
 
     public void update(int start, int end, int k) { // 区间修改
-        __update(start, end, k, 0, n - 1, 1);
+        update(start, end, k, 0, n - 1, 1);
     }
 }
