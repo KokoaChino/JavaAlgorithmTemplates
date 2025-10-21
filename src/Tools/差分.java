@@ -46,14 +46,14 @@ class OneSparseDifference { // 一维稀疏差分
     public final TreeMap<Integer, Long> prefixMap = new TreeMap<>();
 
     public OneSparseDifference(int[][] operations) {
-        TreeMap<Integer, Long> diff = new TreeMap<>();
+        TreeMap<Integer, Long> dif = new TreeMap<>();
         for (int[] op : operations) {
             int l = op[0], r = op[1], d = op[2];
-            diff.put(l, diff.getOrDefault(l, 0L) + d);
-            diff.put(r + 1, diff.getOrDefault(r + 1, 0L) - d);
+            dif.put(l, dif.getOrDefault(l, 0L) + d);
+            dif.put(r + 1, dif.getOrDefault(r + 1, 0L) - d);
         }
         long sum = 0;
-        for (Map.Entry<Integer, Long> entry : diff.entrySet()) {
+        for (Map.Entry<Integer, Long> entry : dif.entrySet()) {
             sum += entry.getValue();
             prefixMap.put(entry.getKey(), sum);
         }
@@ -92,21 +92,21 @@ class TwoSparseDifference { // 二维稀疏差分
         for (int i = 0; i < xs.length; i++) xToIdx.put(xs[i], i);
         for (int i = 0; i < ys.length; i++) yToIdx.put(ys[i], i);
         int n = xs.length, m = ys.length;
-        long[][] diff = new long[n + 2][m + 2];
+        long[][] dif = new long[n + 2][m + 2];
         for (int[] op : operations) {
             int x1 = op[0], y1 = op[1], x2 = op[2], y2 = op[3], d = op[4];
             int i1 = xToIdx.get(x1) + 1, j1 = yToIdx.get(y1) + 1;
             int i2 = xToIdx.get(x2 + 1) + 1, j2 = yToIdx.get(y2 + 1) + 1;
-            diff[i1][j1] += d;
-            diff[i2][j1] -= d;
-            diff[i1][j2] -= d;
-            diff[i2][j2] += d;
+            dif[i1][j1] += d;
+            dif[i2][j1] -= d;
+            dif[i1][j2] -= d;
+            dif[i2][j2] += d;
         }
         this.g = new long[n][m];
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
-                diff[i][j] += diff[i - 1][j] + diff[i][j - 1] - diff[i - 1][j - 1];
-                g[i - 1][j - 1] = diff[i][j];
+                dif[i][j] += dif[i - 1][j] + dif[i][j - 1] - dif[i - 1][j - 1];
+                g[i - 1][j - 1] = dif[i][j];
             }
         }
     }
